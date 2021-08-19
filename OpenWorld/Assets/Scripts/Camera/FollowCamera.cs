@@ -1,34 +1,38 @@
+﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class FollowCamera
     : MonoBehaviour
 {
     public bool IsSmooth;
-    public Vector3 OffsetVec;
 
-    Transform _targetTransform = null;
+    protected Vector3 _offsetPos = Vector3.zero;
+    protected Vector3 _offsetRot = Vector3.zero;
+    protected Transform _targetTm = null;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _targetTransform = transform.parent;
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         Follow();
     }
 
     void Follow()
     {
-        if(_targetTransform == null)
+        if (_targetTm == null)
         {
             return;
         }
 
-        transform.position = _targetTransform.position + OffsetVec;
+        var targetPos = _targetTm.position + _offsetPos;
+        var targetRot = _targetTm.rotation;
+
+        if (IsSmooth)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 2f);
+
+            return;
+        }
+
+        transform.position = targetPos;
+        transform.rotation = targetRot;
     }
 }
