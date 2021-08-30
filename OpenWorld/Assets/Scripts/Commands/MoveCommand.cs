@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using NCreature;
+
 namespace NCommand
 {
    public class MoveCommand
        : ICommand
    {
-        float _walkSpeed = 2f;
+        float _walkSpeed = 1.5f;
+        float _runSpeed = 2f;
 
         float _horizontal = 0;
         float _vertical = 0;
@@ -18,24 +21,25 @@ namespace NCommand
             _vertical = vertical;
         }
 
-        void ICommand.Execute(GameObject playerGameObj)
+        void ICommand.Execute(Creature creature)
         {
-            if(playerGameObj == null)
+            if (creature == null ||
+                creature.Rigidbody == null)
             {
                 return;
             }
 
-            if(playerGameObj.transform == null)
-            {
-                return;
-            }
+            var inputAxis = new Vector3(_horizontal, 0, _vertical);
+            Vector3 creaturePos = creature.Position;
 
-            Vector3 pos = playerGameObj.transform.position;
+            creaturePos.x += inputAxis.x * Time.deltaTime * _walkSpeed;
+            creaturePos.z += inputAxis.z * Time.deltaTime * _walkSpeed;
 
-            pos.x += _horizontal * Time.deltaTime * _walkSpeed;
-            pos.z += _vertical * Time.deltaTime * _walkSpeed;
+            creature.Rigidbody.MovePosition(creaturePos);
 
-            playerGameObj.transform.position = pos;
+            var rot = Quaternion.LookRotation(inputAxis);
+
+            creature.Rigidbody.MoveRotation(Quaternion.Lerp(creature.Rigidbody.rotation, rot, Time.deltaTime * _walkSpeed * 2f));
         }
     }
 }

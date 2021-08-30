@@ -11,7 +11,7 @@ namespace NCreature
 
         protected override void Start()
         {
-    
+            base.Start();
         }
 
         protected override void ChainUpdate()

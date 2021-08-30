@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-[CustomEditor(typeof(Readme))]
+//[CustomEditor(typeof(Readme))]
 [InitializeOnLoad]
 public class ReadmeEditor : Editor {
 	
@@ -23,14 +23,14 @@ public class ReadmeEditor : Editor {
 	{
 		if (!SessionState.GetBool(kShowedReadmeSessionStateName, false ))
 		{
-			var readme = SelectReadme();
-			SessionState.SetBool(kShowedReadmeSessionStateName, true);
+			//var readme = SelectReadme();
+			//SessionState.SetBool(kShowedReadmeSessionStateName, true);
 			
-			if (readme && !readme.loadedLayout)
-			{
-				LoadLayout();
-				readme.loadedLayout = true;
-			}
+			//if (readme && !readme.loadedLayout)
+			//{
+			//	LoadLayout();
+			//	readme.loadedLayout = true;
+			//}
 		} 
 	}
 	
@@ -42,65 +42,65 @@ public class ReadmeEditor : Editor {
 		method.Invoke(null, new object[]{Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false});
 	}
 	
-	[MenuItem("Tutorial/Show Tutorial Instructions")]
-	static Readme SelectReadme() 
-	{
-		var ids = AssetDatabase.FindAssets("Readme t:Readme");
-		if (ids.Length == 1)
-		{
-			var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
+	//[MenuItem("Tutorial/Show Tutorial Instructions")]
+	//static Readme SelectReadme() 
+	//{
+	//	var ids = AssetDatabase.FindAssets("Readme t:Readme");
+	//	if (ids.Length == 1)
+	//	{
+	//		var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
 			
-			Selection.objects = new UnityEngine.Object[]{readmeObject};
+	//		Selection.objects = new UnityEngine.Object[]{readmeObject};
 			
-			return (Readme)readmeObject;
-		}
-		else
-		{
-			Debug.Log("Couldn't find a readme");
-			return null;
-		}
-	}
+	//		return (Readme)readmeObject;
+	//	}
+	//	else
+	//	{
+	//		Debug.Log("Couldn't find a readme");
+	//		return null;
+	//	}
+	//}
 	
-	protected override void OnHeaderGUI()
-	{
-		var readme = (Readme)target;
-		Init();
+	//protected override void OnHeaderGUI()
+	//{
+	//	var readme = (Readme)target;
+	//	Init();
 		
-		var iconWidth = Mathf.Min(EditorGUIUtility.currentViewWidth/3f - 20f, 128f);
+	//	var iconWidth = Mathf.Min(EditorGUIUtility.currentViewWidth/3f - 20f, 128f);
 		
-		GUILayout.BeginHorizontal("In BigTitle");
-		{
-			GUILayout.Label(readme.icon, GUILayout.Width(iconWidth), GUILayout.Height(iconWidth));
-			GUILayout.Label(readme.title, TitleStyle);
-		}
-		GUILayout.EndHorizontal();
-	}
+	//	GUILayout.BeginHorizontal("In BigTitle");
+	//	{
+	//		GUILayout.Label(readme.icon, GUILayout.Width(iconWidth), GUILayout.Height(iconWidth));
+	//		GUILayout.Label(readme.title, TitleStyle);
+	//	}
+	//	GUILayout.EndHorizontal();
+	//}
 	
-	public override void OnInspectorGUI()
-	{
-		var readme = (Readme)target;
-		Init();
+	//public override void OnInspectorGUI()
+	//{
+	//	var readme = (Readme)target;
+	//	Init();
 		
-		foreach (var section in readme.sections)
-		{
-			if (!string.IsNullOrEmpty(section.heading))
-			{
-				GUILayout.Label(section.heading, HeadingStyle);
-			}
-			if (!string.IsNullOrEmpty(section.text))
-			{
-				GUILayout.Label(section.text, BodyStyle);
-			}
-			if (!string.IsNullOrEmpty(section.linkText))
-			{
-				if (LinkLabel(new GUIContent(section.linkText)))
-				{
-					Application.OpenURL(section.url);
-				}
-			}
-			GUILayout.Space(kSpace);
-		}
-	}
+	//	foreach (var section in readme.sections)
+	//	{
+	//		if (!string.IsNullOrEmpty(section.heading))
+	//		{
+	//			GUILayout.Label(section.heading, HeadingStyle);
+	//		}
+	//		if (!string.IsNullOrEmpty(section.text))
+	//		{
+	//			GUILayout.Label(section.text, BodyStyle);
+	//		}
+	//		if (!string.IsNullOrEmpty(section.linkText))
+	//		{
+	//			if (LinkLabel(new GUIContent(section.linkText)))
+	//			{
+	//				Application.OpenURL(section.url);
+	//			}
+	//		}
+	//		GUILayout.Space(kSpace);
+	//	}
+	//}
 	
 	
 	bool m_Initialized;

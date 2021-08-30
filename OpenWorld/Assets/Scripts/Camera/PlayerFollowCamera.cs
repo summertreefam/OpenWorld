@@ -5,16 +5,20 @@ using UnityEngine;
 public class PlayerFollowCamera
     : FollowCamera
 {
-    public void Create(GameObject targetGameObj)
+    public void Create(NCreature.Player player)
     {
-        if (targetGameObj == null)
+        if (player == null)
         {
             return;
         }
 
-        targetGameObj.AddComponent<Camera>();
+        if (player.transform == null)
+        {
+            return;
+        }
+        
+        _targetTm = player.transform;
 
-        _targetTm = targetGameObj.transform.parent;
-        _offsetPos = new Vector3(0, 1f, -3f);
+        _offsetPos = new Vector3(0, 3f, -5f);
     }
 }

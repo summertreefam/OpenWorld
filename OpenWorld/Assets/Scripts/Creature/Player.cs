@@ -9,21 +9,24 @@ namespace NCreature
     public class Player
         : Character
     {
-        Transform _playerTm = null;
-
         PlayerInputHandler _playerInputHandler = null;
 
         protected override void Start()
         {
-            _playerTm = transform;
-
-            AddPlayerFollowCamera();
+            base.Start();
 
             InitPlayerInputHandler();
+
+            //var crafterGameObj = Instantiate(Resources.Load("Prefabs/Crafter")) as GameObject;
+
+            //CraftingAnims.CrafterController craftController = crafterGameObj.GetComponent<CraftingAnims.CrafterController>();
+            //crafterGameObj.transform.SetParent(transform);
+
+            //craftController.charState = CraftingAnims.CrafterState.Idle;
         }
 
         protected override void ChainUpdate()
-        {
+        { 
             ExecuteCommand();
         }
 
@@ -45,26 +48,7 @@ namespace NCreature
                 return;
             }
 
-            command.Execute(gameObject);
-        }
-
-        void AddPlayerFollowCamera()
-        { 
-            var followCameraGameObj = new GameObject("FollowCamera");
-            if(followCameraGameObj == null)
-            {
-                return;
-            }
-
-            followCameraGameObj.transform.SetParent(transform);
-
-            var playerFollowCamera = followCameraGameObj.AddComponent<PlayerFollowCamera>();
-            if (playerFollowCamera == null)
-            {
-                return;
-            }
-
-            playerFollowCamera.Create(followCameraGameObj);
+            command.Execute(this);
         }
     }
 }

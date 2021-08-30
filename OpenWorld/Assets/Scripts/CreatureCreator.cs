@@ -16,14 +16,45 @@ namespace NCreator
 
         void CreatePlayer()
         {
-            var playerGameObj = Instantiate(Resources.Load("Creature/Character")) as GameObject;
-            if(playerGameObj == null)
+            //var playerGameObj = Instantiate(Resources.Load("Prefabs/Crafter")) as GameObject;
+
+            var playerGameObj = Instantiate(Resources.Load("Prefabs/BasicMotionsDummy")) as GameObject;
+            if (playerGameObj == null)
             {
                 return;
             }
 
-            playerGameObj.AddComponent<Player>();
+            AddPlayerFollowCamera(playerGameObj.AddComponent<Player>());
+
             playerGameObj.transform.position = Vector3.zero;
+        }
+
+        void AddPlayerFollowCamera(Player player)
+        {
+            if(player == null ||
+               player.transform == null)
+            {
+                return;
+            }
+
+            var followCameraGameObj = new GameObject("FollowCamera");
+            if (followCameraGameObj == null)
+            {
+                return;
+            }
+
+            followCameraGameObj.tag = "MainCamera";
+            followCameraGameObj.transform.SetParent(transform.parent);
+
+            var playerFollowCamera = followCameraGameObj.AddComponent<PlayerFollowCamera>();
+            if (playerFollowCamera == null)
+            {
+                return;
+            }
+
+            followCameraGameObj.AddComponent<Camera>();
+
+            playerFollowCamera.Create(player);
         }
     }
 }

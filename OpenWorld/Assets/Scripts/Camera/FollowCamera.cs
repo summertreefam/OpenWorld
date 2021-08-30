@@ -4,10 +4,11 @@ using System.Collections;
 public class FollowCamera
     : MonoBehaviour
 {
-    public bool IsSmooth;
+    public Vector3 _offsetPos = Vector3.zero;
+    public Vector3 _offsetRot = Vector3.zero;
+    public Space OffsetPositionSpace = Space.Self;
+    public bool LookAt = true;
 
-    protected Vector3 _offsetPos = Vector3.zero;
-    protected Vector3 _offsetRot = Vector3.zero;
     protected Transform _targetTm = null;
 
     private void FixedUpdate()
@@ -22,17 +23,25 @@ public class FollowCamera
             return;
         }
 
-        var targetPos = _targetTm.position + _offsetPos;
-        var targetRot = _targetTm.rotation;
-
-        if (IsSmooth)
+        if (OffsetPositionSpace == Space.Self)
         {
-            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 2f);
-
-            return;
+            transform.position = _targetTm.TransformPoint(_offsetPos);
+        }
+        else
+        {
+            transform.position = _targetTm.position + _offsetPos;
         }
 
-        transform.position = targetPos;
-        transform.rotation = targetRot;
+        if (LookAt)
+        {
+            var direction = _targetTm.position - transform.position;
+            direction.y = _offsetRot.y;
+
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+        else
+        {
+            transform.rotation = _targetTm.rotation;
+        }
     }
 }
