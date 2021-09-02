@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using NCreature;
+using NCamera;
 
 namespace NCreator
 {
@@ -24,37 +25,30 @@ namespace NCreator
                 return;
             }
 
-            AddPlayerFollowCamera(playerGameObj.AddComponent<Player>());
+            var playerRoot = new GameObject("PlayerRoot");
 
+            playerGameObj.transform.SetParent(playerRoot.transform);
             playerGameObj.transform.position = Vector3.zero;
+
+            playerGameObj.AddComponent<Player>();
+
+            AddPlayerCamera(playerGameObj);
         }
 
-        void AddPlayerFollowCamera(Player player)
+        void AddPlayerCamera(GameObject playerGameObj)
         {
-            if(player == null ||
-               player.transform == null)
+            if(!playerGameObj)
             {
                 return;
             }
 
-            var followCameraGameObj = new GameObject("FollowCamera");
-            if (followCameraGameObj == null)
+            var cameraFactory = new CameraFactory();
+            if (cameraFactory == null)
             {
                 return;
             }
 
-            followCameraGameObj.tag = "MainCamera";
-            followCameraGameObj.transform.SetParent(transform.parent);
-
-            var playerFollowCamera = followCameraGameObj.AddComponent<PlayerFollowCamera>();
-            if (playerFollowCamera == null)
-            {
-                return;
-            }
-
-            followCameraGameObj.AddComponent<Camera>();
-
-            playerFollowCamera.Create(player);
+            cameraFactory.CreatePlayerCamera(ViewType.TP, playerGameObj.transform);
         }
     }
 }

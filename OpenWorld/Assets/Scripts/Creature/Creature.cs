@@ -19,6 +19,7 @@ namespace NCreature
         public Vector3 Position { get { return gameObject.transform.position; } }
 
         protected Model? _model = null;
+        protected Animator _animator = null;
 
         protected virtual void Start()
         {

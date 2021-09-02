@@ -32,14 +32,14 @@ namespace NCommand
             var inputAxis = new Vector3(_horizontal, 0, _vertical);
             Vector3 creaturePos = creature.Position;
 
-            creaturePos.x += inputAxis.x * Time.deltaTime * _walkSpeed;
-            creaturePos.z += inputAxis.z * Time.deltaTime * _walkSpeed;
+            creaturePos.x += inputAxis.x * Time.fixedDeltaTime * _walkSpeed;
+            creaturePos.z += inputAxis.z * Time.fixedDeltaTime * _walkSpeed;
 
             creature.Rigidbody.MovePosition(creaturePos);
 
             var rot = Quaternion.LookRotation(inputAxis);
 
-            creature.Rigidbody.MoveRotation(Quaternion.Lerp(creature.Rigidbody.rotation, rot, Time.deltaTime * _walkSpeed * 2f));
+            creature.Rigidbody.MoveRotation(Quaternion.Lerp(creature.Rigidbody.rotation, rot, Time.fixedDeltaTime * _walkSpeed * 2f));
         }
     }
 }
