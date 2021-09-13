@@ -8,11 +8,11 @@ namespace NHandler
 {
     public class PlayerInputHandler
     {
-        public ICommand HandleInput()
+        public ICommand<NCreature.Player> HandleInput()
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                return new JumpCommand();
+                return new PlayerJumpCommand();
             }
 
             var horizontal = Input.GetAxis("Horizontal");
@@ -21,7 +21,7 @@ namespace NHandler
             if (horizontal != 0 ||
                 vertical != 0)
             {
-                return new MoveCommand(horizontal, vertical);
+                return new PlayerMoveCommand(horizontal, vertical);
             }
 
             return null;

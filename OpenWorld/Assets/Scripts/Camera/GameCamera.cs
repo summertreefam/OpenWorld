@@ -11,6 +11,7 @@ namespace NCamera
 
         protected Camera _camera = null;
         protected Transform _targetTm = null;
+        protected Transform _cameraRootTm { get; private set; }
 
         protected virtual bool Init(Transform targetTm)
         {
@@ -19,9 +20,11 @@ namespace NCamera
                 return false;
             }
 
+            _cameraRootTm = new GameObject("PlayerCameraRoot").transform;
+
             _camera = gameObject.AddComponent<Camera>();
 
-            gameObject.transform.SetParent(targetTm.parent);
+            gameObject.transform.SetParent(_cameraRootTm);
 
             _targetTm = targetTm;
 

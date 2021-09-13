@@ -18,7 +18,7 @@ namespace NCreator
         void CreatePlayer()
         {
             //var playerGameObj = Instantiate(Resources.Load("Prefabs/Crafter")) as GameObject;
-
+            //var playerGameObj = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
             var playerGameObj = Instantiate(Resources.Load("Prefabs/BasicMotionsDummy")) as GameObject;
             if (playerGameObj == null)
             {
@@ -30,25 +30,29 @@ namespace NCreator
             playerGameObj.transform.SetParent(playerRoot.transform);
             playerGameObj.transform.position = Vector3.zero;
 
-            playerGameObj.AddComponent<Player>();
+            var player = playerGameObj.AddComponent<Player>();
+            if(player == null)
+            {
+                return;
+            }
 
-            AddPlayerCamera(playerGameObj);
+            player.SetPlayerCamera(AddPlayerCamera(playerGameObj));
         }
 
-        void AddPlayerCamera(GameObject playerGameObj)
+        GameCamera AddPlayerCamera(GameObject playerGameObj)
         {
             if(!playerGameObj)
             {
-                return;
+                return null;
             }
 
             var cameraFactory = new CameraFactory();
             if (cameraFactory == null)
             {
-                return;
+                return null;
             }
 
-            cameraFactory.CreatePlayerCamera(ViewType.TP, playerGameObj.transform);
+            return cameraFactory.CreatePlayerCamera(ViewType.TP, playerGameObj.transform);
         }
     }
 }

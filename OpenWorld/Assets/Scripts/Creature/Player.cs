@@ -9,20 +9,15 @@ namespace NCreature
     public class Player
         : Character
     {
-        PlayerInputHandler _playerInputHandler = null;
+        public NCamera.GameCamera PlayerGameCamera { get; private set; }
 
+        PlayerInputHandler _playerInputHandler = null;
+        
         protected override void Start()
         {
             base.Start();
 
             InitPlayerInputHandler();
-
-            //var crafterGameObj = Instantiate(Resources.Load("Prefabs/Crafter")) as GameObject;
-
-            //CraftingAnims.CrafterController craftController = crafterGameObj.GetComponent<CraftingAnims.CrafterController>();
-            //crafterGameObj.transform.SetParent(transform);
-
-            //craftController.charState = CraftingAnims.CrafterState.Idle;
         }
 
         protected override void ChainUpdate()
@@ -49,6 +44,11 @@ namespace NCreature
             }
 
             command.Execute(this);
+        }
+
+        public void SetPlayerCamera(NCamera.GameCamera camera)
+        {
+            PlayerGameCamera = camera;
         }
     }
 }

@@ -6,9 +6,9 @@ using NCreature;
 
 namespace NCommand
 {
-    public interface ICommand
+    public interface ICommand<T> where T : Creature
     {
-        void Execute(Creature creature);
+        void Execute(T t);
     }
 }
 

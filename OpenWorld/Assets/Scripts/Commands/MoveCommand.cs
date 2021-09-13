@@ -7,7 +7,7 @@ using NCreature;
 namespace NCommand
 {
    public class MoveCommand
-       : ICommand
+       : ICommand<Creature>
    {
         float _walkSpeed = 1.5f;
         float _runSpeed = 2f;
@@ -21,25 +21,30 @@ namespace NCommand
             _vertical = vertical;
         }
 
-        void ICommand.Execute(Creature creature)
+        void ICommand<Creature>.Execute(Creature creature)
         {
-            if (creature == null ||
-                creature.Rigidbody == null)
-            {
-                return;
-            }
+            //if (creature == null ||
+            //    creature.Rigidbody == null)
+            //{
+            //    return;
+            //}
 
-            var inputAxis = new Vector3(_horizontal, 0, _vertical);
-            Vector3 creaturePos = creature.Position;
 
-            creaturePos.x += inputAxis.x * Time.fixedDeltaTime * _walkSpeed;
-            creaturePos.z += inputAxis.z * Time.fixedDeltaTime * _walkSpeed;
+    
+            //var inputAxis = new Vector3(_horizontal, 0, _vertical);
+            //Vector3 creaturePos = creature.Position;
+            //var movePos = Vector3.zero;
 
-            creature.Rigidbody.MovePosition(creaturePos);
+            //creaturePos += movePos * Time.fixedDeltaTime * _walkSpeed;
 
-            var rot = Quaternion.LookRotation(inputAxis);
+            ////creaturePos.x += inputAxis.x * Time.fixedDeltaTime * _walkSpeed;
+            ////creaturePos.z += inputAxis.z * Time.fixedDeltaTime * _walkSpeed;
 
-            creature.Rigidbody.MoveRotation(Quaternion.Lerp(creature.Rigidbody.rotation, rot, Time.fixedDeltaTime * _walkSpeed * 2f));
+            //creature.Rigidbody.MovePosition(creaturePos);
+
+            //var rot = Quaternion.LookRotation(inputAxis);
+
+            //creature.Rigidbody.MoveRotation(Quaternion.Lerp(creature.Rigidbody.rotation, rot, Time.fixedDeltaTime * _walkSpeed * 2f));
         }
     }
 }
