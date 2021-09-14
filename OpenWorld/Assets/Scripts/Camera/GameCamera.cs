@@ -5,33 +5,31 @@ using UnityEngine;
 namespace NCamera
 {
     public abstract class GameCamera
-        : MonoBehaviour
+        : BaseCamera
     {
         public Vector3 _offsetPos = Vector3.zero;
 
-        protected Camera _camera = null;
         protected Transform _targetTm = null;
-        protected Transform _cameraRootTm { get; private set; }
 
-        protected virtual bool Init(Transform targetTm)
+        protected override void Start()
         {
-            if(targetTm == null)
+            base.Start();
+        }
+
+        public virtual GameCamera Create(Transform targetTm)
+        {
+            if (targetTm == null)
             {
-                return false;
+                return null;
             }
 
-            _cameraRootTm = new GameObject("PlayerCameraRoot").transform;
-
-            _camera = gameObject.AddComponent<Camera>();
-
-            gameObject.transform.SetParent(_cameraRootTm);
+            SetParent(this);
 
             _targetTm = targetTm;
 
-            return true;
+            return this;
         }
 
-        public abstract GameCamera Create(Transform targetTm);
         protected abstract void FixedUpdate();
     }
 }

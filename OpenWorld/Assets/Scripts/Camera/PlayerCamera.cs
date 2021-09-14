@@ -7,6 +7,8 @@ namespace NCamera
     public class PlayerCamera
         : GameCamera
     {
+        readonly System.Tuple<float, float> RotationRange = new System.Tuple<float, float>(0, 90f);
+
         public float MouseSensitivity = 4f;
         public float Orbit = 10f;
         public float Scroll = 6f;
@@ -16,24 +18,14 @@ namespace NCamera
 
         public override GameCamera Create(Transform targetTm)
         {
-            if(!Init(targetTm))
+            if(!base.Create(targetTm))
             {
                 return null;
             }
 
-            return this;
-        }
-
-        protected override bool Init(Transform targetTm)
-        {
-            if(!base.Init(targetTm))
-            {
-                return false;
-            }
-
             _offsetPos = new Vector3(0, 1.5f, 0);
 
-            return true;
+            return this;
         }
 
         protected override void FixedUpdate()
@@ -59,21 +51,23 @@ namespace NCamera
         }
 
         void Rotation()
-
         {
-            if (Input.GetAxis("Mouse X") != 0 ||
-                Input.GetAxis("Mouse Y") != 0)
-            {
-                _rotation.x += Input.GetAxis("Mouse X") * MouseSensitivity;
-                _rotation.y += Input.GetAxis("Mouse Y") * MouseSensitivity;
+            float inputMouseX = Input.GetAxis("Mouse X");
+            float inputMouseY = Input.GetAxis("Mouse Y");
 
-                if (_rotation.y < 0f)
+            if (inputMouseX != 0 ||
+                inputMouseY != 0)
+            {
+                _rotation.x += inputMouseX * MouseSensitivity;
+                _rotation.y += inputMouseY * MouseSensitivity;
+
+                if (_rotation.y < RotationRange.Item1)
                 {
-                    _rotation.y = 0f;
+                    _rotation.y = RotationRange.Item1;
                 }
-                else if (_rotation.y > 90f)
+                else if (_rotation.y > RotationRange.Item2)
                 {
-                    _rotation.y = 90f;
+                    _rotation.y = RotationRange.Item2;
                 }
             }
 

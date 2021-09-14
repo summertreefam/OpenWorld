@@ -19,7 +19,7 @@ namespace NCamera
             switch (viewType)
             {
                 case ViewType.FP:
-                    gameCamera = cameraGameObj.AddComponent<PlayerFollowCamera>();
+                  
                     break;
 
                 case ViewType.TP:
