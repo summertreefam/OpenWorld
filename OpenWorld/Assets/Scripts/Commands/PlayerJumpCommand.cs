@@ -7,11 +7,11 @@ using NCreature;
 namespace NCommand
 {
     public class PlayerJumpCommand
-        : ICommand<Player>
+        : ICreatureActionCommand<Player>
     {
         float _jumpPower = 2f;
 
-        void ICommand<Player>.Execute(Player player)
+        void ICreatureActionCommand<Player>.Execute(Player player)
         {
             if (player == null)
             {
@@ -19,6 +19,14 @@ namespace NCommand
             }
 
             //player.Rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+        }
+
+        NType.NCreature.NAction.ECreatureMove ICreatureActionCommand<Player>.ECreatureMove
+        {
+            get
+            {
+                return NType.NCreature.NAction.ECreatureMove.Jump;
+            }
         }
     }
 }

@@ -15,15 +15,17 @@ namespace NCreature
         }
 
         public NInfo.CreatureInfo CreatureInfo { get; private set; }
-        public Animator Animator { get; protected set; }
+        
 
         public Vector3 Position { get { return gameObject.transform.position; } }
         
-        protected Model? _model = null;        
+        protected Model? _model = null;
+        protected Animator _animator { get; private set; }
+        protected NType.NCreature.NAction.ECreatureMove _eCreatureMove = NType.NCreature.NAction.ECreatureMove.None;
 
         protected virtual void Start()
         {
-            Animator = gameObject.GetComponent<Animator>();
+            _animator = gameObject.GetComponent<Animator>();
 
             InitModel();
         }

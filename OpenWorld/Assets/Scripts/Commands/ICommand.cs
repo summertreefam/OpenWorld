@@ -6,9 +6,16 @@ using NCreature;
 
 namespace NCommand
 {
-    public interface ICommand<T> where T : Creature
+    public interface ICommand
+    {
+        void Execute();
+    }
+
+    public interface ICreatureActionCommand<T>
+        where T : Creature
     {
         void Execute(T t);
+        NType.NCreature.NAction.ECreatureMove ECreatureMove { get; }
     }
 }
 

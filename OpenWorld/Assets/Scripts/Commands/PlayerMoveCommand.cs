@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NCommand
 {
     public class PlayerMoveCommand
-        : ICommand<NCreature.Player>
+        : ICreatureActionCommand<NCreature.Player>
     {
         float _walkSpeed = 2f;
         float _runSpeed = 2f;
@@ -14,6 +14,7 @@ namespace NCommand
         float _vertical = 0;
 
         Vector3 _moveDir = Vector3.zero;
+        NType.NCreature.NAction.ECreatureMove _eCurrCreatureMove = NType.NCreature.NAction.ECreatureMove.Walk;
 
         public PlayerMoveCommand(float horizontal, float vertical)
         {
@@ -21,7 +22,7 @@ namespace NCommand
             _vertical = vertical;
         }
 
-        void ICommand<NCreature.Player>.Execute(NCreature.Player player)
+        void ICreatureActionCommand<NCreature.Player>.Execute(NCreature.Player player)
         {
             if (player == null ||
                 player.PlayerGameCamera == null)
@@ -45,12 +46,23 @@ namespace NCommand
 
             player.transform.Rotate(0, turnAmount * 280f * Time.deltaTime, 0);
 
-            player.Animator.SetBool("IsWalk", move.magnitude > 0);
+            if(move.magnitude > 0)
+            {
+                _eCurrCreatureMove = NType.NCreature.NAction.ECreatureMove.Walk;
+            }
 
             _moveDir = player.transform.forward * move.magnitude;
             _moveDir *= _walkSpeed;
 
             player.transform.position += _moveDir * Time.deltaTime;
+        }
+
+        NType.NCreature.NAction.ECreatureMove ICreatureActionCommand<NCreature.Player>.ECreatureMove
+        {
+            get
+            {
+                return _eCurrCreatureMove;
+            }
         }
     }
 }

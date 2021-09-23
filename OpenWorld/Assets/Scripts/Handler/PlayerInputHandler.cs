@@ -8,11 +8,15 @@ namespace NHandler
 {
     public class PlayerInputHandler
     {
-        public ICommand<NCreature.Player> HandleInput()
+        public ICreatureActionCommand<NCreature.Player> HandleInput(out NType.NCreature.NAction.ECreatureMove eCreatureMove)
         {
+            ICreatureActionCommand<NCreature.Player> creatureActionCmd = null; 
+
+            eCreatureMove = NType.NCreature.NAction.ECreatureMove.Idle;
+
             if (Input.GetKey(KeyCode.Space))
             {
-                return new PlayerJumpCommand();
+                creatureActionCmd = new PlayerJumpCommand();
             }
 
             var horizontal = Input.GetAxis("Horizontal");
@@ -21,11 +25,17 @@ namespace NHandler
             if (horizontal != 0 ||
                 vertical != 0)
             {
-                return new PlayerMoveCommand(horizontal, vertical);
+                creatureActionCmd = new PlayerMoveCommand(horizontal, vertical); 
             }
 
-            return null;
+            if(creatureActionCmd != null)
+            {
+                eCreatureMove = creatureActionCmd.ECreatureMove;
+            }
+
+            return creatureActionCmd;
         }
     }
 }
 
+ 

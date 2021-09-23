@@ -37,13 +37,23 @@ namespace NCreature
                 return;
             }
 
-            var command = _playerInputHandler.HandleInput();
-            if (command == null)
+            var actionCmd = _playerInputHandler.HandleInput(out _eCreatureMove);
+            if(actionCmd != null)
+            {
+                actionCmd.Execute(this);
+            }
+
+            UpdateAnim();
+        }
+
+        void UpdateAnim()
+        {
+            if (!_animator)
             {
                 return;
             }
 
-            command.Execute(this);
+            _animator.SetBool("IsWalk", _eCreatureMove != NType.NCreature.NAction.ECreatureMove.Idle);
         }
 
         public void SetPlayerCamera(NCamera.GameCamera camera)
