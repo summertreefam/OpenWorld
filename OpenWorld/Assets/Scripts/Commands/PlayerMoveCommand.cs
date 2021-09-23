@@ -7,9 +7,8 @@ namespace NCommand
     public class PlayerMoveCommand
         : ICommand<NCreature.Player>
     {
-        float _walkSpeed = 1.5f;
+        float _walkSpeed = 2f;
         float _runSpeed = 2f;
-        float _gravity = 9.81f;
 
         float _horizontal = 0;
         float _vertical = 0;
@@ -25,7 +24,6 @@ namespace NCommand
         void ICommand<NCreature.Player>.Execute(NCreature.Player player)
         {
             if (player == null ||
-                player.CharacterController == null ||
                 player.PlayerGameCamera == null)
             {
                 return;
@@ -47,17 +45,12 @@ namespace NCommand
 
             player.transform.Rotate(0, turnAmount * 280f * Time.deltaTime, 0);
 
-            if (player.CharacterController.isGrounded)
-            {
-                player.Animator.SetBool("run", move.magnitude > 0);
+            player.Animator.SetBool("IsWalk", move.magnitude > 0);
 
-                _moveDir = player.transform.forward * move.magnitude;
-                _moveDir *= _walkSpeed;
-            }
+            _moveDir = player.transform.forward * move.magnitude;
+            _moveDir *= _walkSpeed;
 
-            _moveDir.y -= _gravity * Time.deltaTime;
-
-            player.CharacterController.Move(_moveDir * Time.deltaTime);
+            player.transform.position += _moveDir * Time.deltaTime;
         }
     }
 }

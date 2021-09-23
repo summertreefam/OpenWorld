@@ -11,7 +11,17 @@ namespace NCamera
         {
             base.Start();
 
+            Init();
+        }
+
+        void Init()
+        {
             SetParent(this);
+
+            //_camera.cullingMask =  
+
+            Debug.Log("Screen.width : " + Screen.width);
+            Debug.Log("Screen.height : " + Screen.height);
         }
     }
 }

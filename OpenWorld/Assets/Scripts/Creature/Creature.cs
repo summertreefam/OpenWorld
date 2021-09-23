@@ -10,10 +10,11 @@ namespace NCreature
         protected struct Model
         {
             public Renderer Renderer { get; set; }
+            public Rigidbody Rigidbody { get; set; }
+            public BoxCollider BoxCollider { get; set; }
         }
 
         public NInfo.CreatureInfo CreatureInfo { get; private set; }
-        public CharacterController CharacterController { get; protected set; }
         public Animator Animator { get; protected set; }
 
         public Vector3 Position { get { return gameObject.transform.position; } }
@@ -34,22 +35,32 @@ namespace NCreature
 
         void InitModel()
         {
-            CharacterController = gameObject.AddComponent<CharacterController>();
-
             var renderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
             if(renderer == null)
             {
                 return;
             }
 
-            if(CharacterController != null)
+            var rigidbody = gameObject.AddComponent<Rigidbody>();
+            if (!rigidbody)
             {
-                CharacterController.center = renderer.bounds.center;
+                return;
             }
+
+            var boxCollider = gameObject.AddComponent<BoxCollider>();
+            if (!boxCollider)
+            {
+                return;
+            }
+
+            boxCollider.center = renderer.bounds.center;
+            boxCollider.size = renderer.bounds.size;
 
             _model = new Model()
             {
                 Renderer = renderer,
+                Rigidbody = rigidbody,
+                BoxCollider = boxCollider,
             };
         }
 
