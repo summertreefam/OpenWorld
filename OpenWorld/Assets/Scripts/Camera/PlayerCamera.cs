@@ -12,7 +12,7 @@ namespace NCamera
         public float MouseSensitivity = 4f;
         public float Orbit = 10f;
         public float Scroll = 6f;
-        public float Distance = 8f;
+        public float Distance = 5f;
 
         Vector3 _rotation = Vector3.zero;
 
@@ -23,7 +23,7 @@ namespace NCamera
                 return null;
             }
 
-            _offsetPos = new Vector3(0, 1.5f, 0);
+            _offsetPos = new Vector3(0, 2f, 0);
 
             return this;
         }
